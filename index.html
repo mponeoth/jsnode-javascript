@@ -5,34 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        .container {
+            width: 400px;
+            height: 200px;
+            background-color: teal;
+            padding: 2rem 2rem;
+            font-size: 2rem;
+            color: white;
+        }
+        .link,
+        .link:visited {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        .link:hover {
+            color: #333;
+        }
+        .yazi {
+            font-size: 2rem;
+        }
+    </style>
+
 </head>
+<!-- https://www.emrealtunbilek.com yerine # koydugumuz zaman adrese gitme sayfada kal aanlamindadir  eger diyez koymassak e.preventDefault() -->
 <body>
-    <h4 id="baslik" class="baslikSinif">js dersleri </h4>
-    <h2>Document Object Model</h2>
-    <ul>ul ile  Browser trafindan olusturulan node/elementlerin agacidir</ul>
-    <p>Browser trafindan olusturulan node/elementlerin agacidir</p>
-    <p>Js ile DOM yapisindaki elemanlar okunabilir degistirilebilir veya </p>
-
-    <form id="FormID" action="www.muhammetKuruoglu.com">
-        <input type="text" id="input-text">
-    </form>
-
-    <a class="link link-google" href="www.google.com">Google</a><br>
-    <a class="link link-facebook" href="www.facebook.com">Facebook</a><br>
-    <a class="link link-instagram" href="www.instagram.com">Instagram</a><br>
-
-    <ul id="liste" class="liste">
-        <li class="liste-item">Bursa</li>
-        <li class="liste-item">istanbul</li>
-        <li class="liste-item">ankara</li>
-        <li class="liste-item">sivas</li>
-    </ul>
- 
-
-   <div class="liste-item"> test liste item</div>
-    
-    <script src="dom_gezinti.js"></script>
-
+    <div class="container">
+        <a href="https://www.emrealtunbilek.com"  class="link">Blog sitem</a>
+        <p class="yazi">Merhaba</p>
+    </div>
+    <script src="dom_events.js"></script>
 
 </body>
 </html>
