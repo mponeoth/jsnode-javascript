@@ -31,13 +31,48 @@
     </style>
 
 </head>
-<!-- https://www.emrealtunbilek.com yerine # koydugumuz zaman adrese gitme sayfada kal aanlamindadir  eger diyez koymassak e.preventDefault() -->
+<!-- https://ww w.emrealtunbilek.com yerine # koydugumuz zaman adrese gitme sayfada kal aanlamindadir  eger diyez koymassak e.preventDefault() -->
 <body>
+    <!-- biz herhangi bir click eventi yakalama kodu yazdiysak aslinda ayni kod onun parendi yani child denilen div e nun parendi parent denilen div onun parendi body e aktariliyor   -->
+    <!-- delegation ayni class adlarinda click eventi varsa en usttekinin calismasi delegation dur 2. merhaba calismaz sadece ilki calisir genellikle boyle durumlarda biz parenti seceriz hepsini calistirmak icin  -->
+    
+
+    <div class="parent">
+
+        <div class="child">
+            
+            <h3 class="item child-item">Merhaba</h3>
+            <h3 class="item child-item">Merhaba</h3>
+            <h3 class="item child-item">Merhaba</h3>
+            <h3 class="item child-item">Merhaba</h3>
+            <h3 class="item child-item">Merhaba</h3>
+        </div>
+    </div>
+
+
+
+
     <div class="container">
-        <a href="https://www.emrealtunbilek.com"  class="link">Blog sitem</a>
+        <form action="https://www.emrealtunbilek.com" method="post" id="form">
+            <input id="ad" type="text"  placeholder="adiniz"> 
+            <select name="sehir" id="sehir">
+                <option value="1">Bursa</option>
+                <option value="2">Izmir</option>
+            </select>
+            <button type="button">Normal Button </button>    
+            <button type="reset">Temizle </button>    
+            <button type="submit">Gonder</button>     
+        </form>
+
+        <a href="https://www.emrealtunbilek.com" target="_blank" class="link">Blog sitem</a>
         <p class="yazi">Merhaba</p>
     </div>
-    <script src="dom_events.js"></script>
+
+
+
+
+
+    <script src="dom_events1.js"></script>  
 
 </body>
 </html>
