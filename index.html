@@ -4,75 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <style>
-        .container {
-            width: 400px;
-            height: 200px;
-            background-color: teal;
-            padding: 2rem 2rem;
-            font-size: 2rem;
-            color: white;
-        }
-        .link,
-        .link:visited {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        }
-        .link:hover {
-            color: #333;
-        }
-        .yazi {
-            font-size: 2rem;
-        }
-    </style>
-
+    <title>Local ve Session Storage</title>
 </head>
-<!-- https://ww w.emrealtunbilek.com yerine # koydugumuz zaman adrese gitme sayfada kal aanlamindadir  eger diyez koymassak e.preventDefault() -->
 <body>
-    <!-- biz herhangi bir click eventi yakalama kodu yazdiysak aslinda ayni kod onun parendi yani child denilen div e nun parendi parent denilen div onun parendi body e aktariliyor   -->
-    <!-- delegation ayni class adlarinda click eventi varsa en usttekinin calismasi delegation dur 2. merhaba calismaz sadece ilki calisir genellikle boyle durumlarda biz parenti seceriz hepsini calistirmak icin  -->
-    
+        <form action="#" id="form">
+            <input type="text" name="isim" id="isim" class="isim">
+            <button type="submit">Kaydet</button>
+            <ul class="liste">
 
-    <div class="parent">
-
-        <div class="child">
-            
-            <h3 class="item child-item">Merhaba</h3>
-            <h3 class="item child-item">Merhaba</h3>
-            <h3 class="item child-item">Merhaba</h3>
-            <h3 class="item child-item">Merhaba</h3>
-            <h3 class="item child-item">Merhaba</h3>
-        </div>
-    </div>
-
-
-
-
-    <div class="container">
-        <form action="https://www.emrealtunbilek.com" method="post" id="form">
-            <input id="ad" type="text"  placeholder="adiniz"> 
-            <select name="sehir" id="sehir">
-                <option value="1">Bursa</option>
-                <option value="2">Izmir</option>
-            </select>
-            <button type="button">Normal Button </button>    
-            <button type="reset">Temizle </button>    
-            <button type="submit">Gonder</button>     
+            </ul>
         </form>
-
-        <a href="https://www.emrealtunbilek.com" target="_blank" class="link">Blog sitem</a>
-        <p class="yazi">Merhaba</p>
-    </div>
-
-
-
-
-
-    <script src="dom_events1.js"></script>  
+        <script src="storage.js"></script>
 
 </body>
 </html>
