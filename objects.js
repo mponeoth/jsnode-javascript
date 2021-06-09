@@ -114,3 +114,50 @@ const fonk =  function(){ }
 console.log(fonk.constructor);
 console.log(fonk.constructor());//bos dondurur cunku fonk icinde birsey yok
 
+// -------------  Prototype Kavrami      --------------------
+//JS prototype miras modelini kullanir
+//Her constructor function/class ayni kurucu fonksiyonla olusturulan instancelarin
+//ortak olarak kullanabilecekleri prototype isimli propertye sahiptir. Prototype 
+//property de bir nesne dondurur
+
+Ogrenci.prototype.okulumuz = "zuftusenyuva"
+Ogrenci.prototype.bilgilerimiGoster = function(){
+    return  `adim : ${this.adim} soyadim : ${this.soyadimiz} yasim : ${this.yasimiz} okulum :${this.okulumuz}`;
+}
+
+function Ogrenci(ad,soyad,yas){
+    this.adim = ad,
+    this.soyadimiz = soyad,
+    this.yasimiz = yas
+    
+}
+const muhammet = new Ogrenci('muhammet','kuruoglu',27)
+const enes = new Ogrenci('enes','haci',33)
+//-- Ogrenci constructor ini kullanan her turlu instance i  ayse ali fatma muhammet enes gibi mutlaka bu degerlere(okulumuz,bilgilerimiGoster) sahiptir cunku prototype a atadik  
+
+console.log(muhammet.bilgilerimiGoster())  //adim : muhammet soyadim : kuruoglu yasim : 27 okulum :zuftusenyuva
+console.log(enes.bilgilerimiGoster());//adim : enes soyadim : haci yasim : 33 okulum :zuftusenyuva
+
+
+//-----detayli kismi 
+
+//---- prototype in toString li kullanimi
+Ogrenci.prototype.toString = function(){ //Ogrenci yazdirilicak11  yolu stringe atiyoruz 
+    return "Ogrenci stringden yazdirilicak "
+}
+console.log(muhammet.toString());//1)yolu Ogrenci stringden yazdirilicak
+
+console.log("***" + muhammet); //2)yolu ***Ogrenci stringden yazdirilicak
+//----
+
+console.log(muhammet);//Ogrenci {adim: "muhammet", soyadimiz: "kuruoglu", yasimiz: 27}
+
+console.log(enes.constructor.prototype) //bir nesne dondurur//{okulumuz: "zuftusenyuva", bilgilerimiGoster: ƒ, constructor: ƒ}
+
+//--------------------
+
+const dizi= [1,2,3]
+const dizi2= [11,22,33]
+ console.log(dizi.constructor.prototype);
+dizi.push(1)
+
