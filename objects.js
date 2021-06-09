@@ -161,3 +161,44 @@ const dizi2= [11,22,33]
  console.log(dizi.constructor.prototype);
 dizi.push(1)
 
+
+
+//normalde objelerde nokta "." deyip deger atamasi yapiyoruz yada bu degerleri okuyabiliyoruz // instanceof operatörü bir objenin belirli bir sınıfa ait olup olmadığını kontrol eder. 
+
+
+//---------- Wrapper-Sarmalayici Objeler
+
+const isim = 'emre' //primitive dir 
+
+console.log(typeof isim);//string
+console.log(isim instanceof Object);//false dedi cunku primitive tip
+
+
+console.log('*************');
+
+console.log(isim.toUpperCase());//'EMRE' bundan sonra objemi oldu cunku objelere ozgu . ifadesini kullanip birseyler yaptiriyoruz
+console.log(isim instanceof Object);//false
+
+console.log(isim.constructor.prototype);//eger biz bir primitive('emre') yapiya object gibi davranirsak o String diye bir objenin icine alir ondan dolayi hem .toUppercase() hem .charAt() kullandik  String {"", constructor: ƒ, anchor: ƒ, big: ƒ, blink: ƒ, …}
+console.log(isim.charAt(0)); //ilk harfini al 
+
+
+//sonuc olarak biz eger primitive yapiya objeymis gibi davranirsak otomatik olarak bunu alir kullandirir ve sonra geri cikarir  peki biz bunu kalici hale getirmek istersek ne yapmaliyiz
+
+const renk = new String('kirmizi')
+console.log(typeof renk);// object
+
+const sayilar = new Number(1994)
+console.log(typeof sayilar);// object
+sayilar.rakam = 2005 //tipki object gibi deger verebiliyoruz
+console.log(sayilar.rakam); //2005 
+
+const sayi = 5
+console.log(typeof sayi); //number yukaridakine object dedi buna number dedi
+sayi.ssss = 12  //object e cevirmedigimiz icin atama yapilamaz 
+console.log(sayi.ssss); //undefined
+
+const sehiler = new Array('ankara' , 'mersin' , 'kastamonu')
+console.log(typeof sehiler); //object
+console.log(sehiler); //(3) ["ankara", "mersin", "kastamonu"]
+
