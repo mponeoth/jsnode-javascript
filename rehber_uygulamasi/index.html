@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rehber uygulamasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./skeleton/normalize.css">
+    <link rel="stylesheet" href="./skeleton/skeleton.css">
+    <link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Rehber Uygulamasi</h1>
+        <div class="bilgi bilgi--success">Basarili</div>
+        <div class="bilgi bilgi--error">Hata Cikti</div>
+        
+        <form id="form-rehber">
+            <div>
+                <label for="ad">Adi</label>
+                <input type="text" id="ad" class="u-full-width">
+            </div>
+            <div>
+                <label for="soyad">Soyad</label>
+                <input type="text" id="soyad" class="u-full-width">
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="text" id="email" class="u-full-width">
+            </div>
+            <div>
+                <input type="submit" class="button-primary u-full-width" value="Kaydet">
+            </div>
+
+        </form>
+
+
+    <hr>
+
+    <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Mail</th>
+            <th>Islem</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Muhammet</td>
+                <td>Kuruoglu</td>
+                <td>27</td>
+                <td>
+                
+                    <button class="btn btn--edit"><i class="far fa-edit"></i></button>
+                    <button class="btn btn--delete"><i class="far fa-trash-alt"></i></button>
+                   
+                </td>
+              </tr>
+               
+          <tr>
+            <td>Muhammet</td>
+            <td>Kuruoglu</td>
+            <td>27</td>
+            <td>
+            
+                <button class="btn btn--edit"><i class="far fa-edit"></i></button>
+                <button class="btn btn--delete"><i class="far fa-trash-alt"></i></button>
+               
+            </td>
+          </tr>
+          <tr>
+            <td>Muhammet</td>
+            <td>Kuruoglu</td>
+            <td>27</td>
+            <td>
+            
+                <button class="btn btn--edit"><i class="far fa-edit"></i></button>
+                <button class="btn btn--delete"><i class="far fa-trash-alt"></i></button>
+               
+            </td>
+          </tr>
+          <tr>
+            <td>Muhammet</td>
+            <td>Kuruoglu</td>
+            <td>27</td>
+            <td>
+            
+                <button class="btn btn--edit"><i class="far fa-edit"></i></button>
+                <button class="btn btn--delete"><i class="far fa-trash-alt"></i></button>
+               
+            </td>
+          </tr>
+           
+        </tbody>
+      </table>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
