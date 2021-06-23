@@ -28,3 +28,7 @@
 .bilgi--error{
     border: 1px solid red;
 }
+/* far yani delete ve edit in ustune geldigimizde isaret parmagi cikar */
+.far{
+    pointer-events: none;
+}

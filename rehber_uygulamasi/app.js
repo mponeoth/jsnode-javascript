@@ -9,10 +9,63 @@ const form = document.querySelector('#form-rehber')
 
 const kisiListesi =  document.querySelector('.kisi-listesi')
 
+//silme islemi icin bir ekrandan bide dizimizden silmeliyiz 
+
+kisiListesi.addEventListener('click',kisiIslemleriniYap)
+
+function kisiIslemleriniYap(e){
+    
+    if(e.target.classList.contains('btn--delete')){
+        const silinecekTREleman = e.target.parentElement.parentElement
+        const silinecekMaileleman = e.target.parentElement.previousElementSibling.textContent; //maili yakaladik burada
+        rehberdenSil(silinecekTREleman , silinecekMaileleman)// biz delete buttonundayiz parentina ulasmak istiyoruz o yuzden ilk td sonra tr ye ulastik
+        
+    }
+    else if(e.target.classList.contains('btn--edit')){
+    }
+   
+}
+function rehberdenSil(silinecekTREleman ,silinecekMaileleman){
+    //ekranimizdan silmek icin
+    silinecekTREleman.remove()
+
+    //----------
+    //forEach tumKisilerDizisi n de hepsini bir bir kontrol eder ve o an gezdigi kisi ile o an gezdigi indexi bana verir icinden emaili alir ve silinecekMaileleman e esit mi diye bakar esitse splice metodu ile buradaki index e gore cikarir
+    //emaile gore silme islemi // splice yapisinda buldugumuz index degerini(email) ve 1 yazarsak tumKisilerDizisin de o kisinin bulundugu indexden maili silmis olucak aslinda kendisini silmis olucak splice(start)/ splice(start, deleteCount)
+    //NOTONEMLI :  eger biz maili silersek otomatik olarak o objeyi siler maili id olarak dusunebiliriz
+    
+    //1)yol forEach ile
+    tumKisilerDizisi.forEach(function(kisi,index){
+        if(kisi.email === silinecekMaileleman){
+            tumKisilerDizisi.splice(index,1)
+         }
+    })
+
+    //--------
+    //ONEMLINOT sonuc olarak maili almadigimiz zaman yeni olusturdugumuz silinmeyecekEleman a nesnemiz otomatik olarak silinir
+    //2)yol filter ile de hepsini bir bir kontrol eder  
+    const silinmeyecekEleman = tumKisilerDizisi.filter((kisi,index)=>{
+       return kisi.email !== silinecekMaileleman
+        
+    })
+
+
+    //const tumKisilerDizisi ile tanimladigimiz zaman yeni bir deger atayamayiz tumKisilerDizisi = silinmeyecekEleman diye atama yapamayiz  o yuzden sifirlamamiz gerekiyor  tumKisilerDizisi.length = 0 bu sekilde ondan sonra atayabiliriz
+    //eger tumKisilerDizisi const degilde let diye tanimlasaydik  tumKisilerDizisi = tumKisilerDizisi.filter((kisi,index)=>{ return kisi.email !== silinecekMaileleman} dememiz yeterli olurdu 
+  
+    tumKisilerDizisi.length = 0 //icini bolsattik
+
+    tumKisilerDizisi.push(...silinmeyecekEleman) //push ile atamaliyiz sonucta diziye atama yapiyoruz
+
+    console.log('silme islemi yapildi');
+    console.log(tumKisilerDizisi);
+
+}
+
 form.addEventListener('submit',Kaydet)
 
 //tum kisiler icin dizi 
-const tumKisilerDizisi = []
+    const tumKisilerDizisi = []
 
 function Kaydet(e){
     e.preventDefault()
@@ -92,7 +145,7 @@ setTimeout(function(){
 
  }
 
- function kisiListesiEkle(eklenecekKisi){
+ function kisiListesiEkle(eklenecekKisi){//
     const olusturulanTrlistesi = document.createElement('tr')
     olusturulanTrlistesi.innerHTML= ` <td>${eklenecekKisi.ad}</td>
     <td>${eklenecekKisi.soyad}</td>
@@ -104,6 +157,10 @@ setTimeout(function(){
        
     </td>`
     kisiListesi.appendChild(olusturulanTrlistesi)
-    tumKisilerDizisi.push(eklenecekKisi)
+    tumKisilerDizisi.push(eklenecekKisi)//her kisi eklendikten sonra dizimize push yapiyoruz onu gostermek istedim 
     bilgiOlustur('kisi rehbere kaydedildi',true) //bilgi olusturu buradan cagirdik ikide bir mesaj gondermek yerine digerini sildik
+    console.log(tumKisilerDizisi);
 }
+
+
+
