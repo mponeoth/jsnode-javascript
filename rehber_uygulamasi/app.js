@@ -13,16 +13,32 @@ const kisiListesi =  document.querySelector('.kisi-listesi')
 
 kisiListesi.addEventListener('click',kisiIslemleriniYap)
 
+//tum kisiler icin dizi 
+const tumKisilerDizisi = []
+let secilenSatir = undefined;
+
+
 function kisiIslemleriniYap(e){
     
     if(e.target.classList.contains('btn--delete')){
         const silinecekTREleman = e.target.parentElement.parentElement
-        const silinecekMaileleman = e.target.parentElement.previousElementSibling.textContent; //maili yakaladik burada
+        const silinecekMaileleman = e.target.parentElement.parentElement.cells[2].textContent; //maili yakaladik burada tablolarda cells ler ile ulasabiliriz tr den td lere 
         rehberdenSil(silinecekTREleman , silinecekMaileleman)// biz delete buttonundayiz parentina ulasmak istiyoruz o yuzden ilk td sonra tr ye ulastik
         
     }
     else if(e.target.classList.contains('btn--edit')){
-    }
+        document.querySelector('.kaydetGuncelle').value = 'Guncelle'
+        const secilenTR = e.target.parentElement.parentElement;
+        const guncellenecekEmail =  secilenTR.cells[2].textContent // biz burada emaile ulasiyoruz 
+    
+        ad.value = secilenTR.cells[0].textContent //burada ada ulasiyoruz 
+        soyad.value = secilenTR.cells[1].textContent
+        email.value = secilenTR.cells[2].textContent
+        
+        secilenSatir = secilenTR;
+        console.log(tumKisilerDizisi); 
+
+    }    
    
 }
 function rehberdenSil(silinecekTREleman ,silinecekMaileleman){
@@ -56,35 +72,58 @@ function rehberdenSil(silinecekTREleman ,silinecekMaileleman){
     tumKisilerDizisi.length = 0 //icini bolsattik
 
     tumKisilerDizisi.push(...silinmeyecekEleman) //push ile atamaliyiz sonucta diziye atama yapiyoruz
-
-    console.log('silme islemi yapildi');
-    console.log(tumKisilerDizisi);
-
+ 
+    alanlariTemizle() //silme isleminden sonra calistirdik
+    document.querySelector('.kaydetGuncelle').value = 'Kaydet'
 }
 
 form.addEventListener('submit',Kaydet)
 
-//tum kisiler icin dizi 
-    const tumKisilerDizisi = []
+
 
 function Kaydet(e){
     e.preventDefault()
 
-        const eklenecekKisi = {
+        const eklenecekveyaGuncellenecekKisi = {
             ad : ad.value,
             soyad : soyad.value,
             email : email.value
         }
  
 
-    const sonuc = verileriKontrolEt(eklenecekKisi)
+    const sonuc = verileriKontrolEt(eklenecekveyaGuncellenecekKisi)
     if(sonuc.durum){
-        kisiListesiEkle(eklenecekKisi)
+        if(secilenSatir){
+            kisiyiGuncelle(eklenecekveyaGuncellenecekKisi)
+        }
+        else{
+            kisiListesiEkle(eklenecekveyaGuncellenecekKisi)
+        }
       }else{
         bilgiOlustur(sonuc.mesaj,sonuc.durum)
      }
 
 }
+
+    function  kisiyiGuncelle(kisi){
+        //kisi parametresinde secilen kisinin yeni degerleri vardir 
+        //secilenSatirda da eski degerler var... secilenSatirda eski degerlerimiz var  tumkisiler dizisine atamayapiyoruz degelerimizi 
+        for(let i=0; i<tumKisilerDizisi.length; i++){
+            if(tumKisilerDizisi[i].email = secilenSatir.cells[2].textContent){
+                tumKisilerDizisi[i] = kisi
+                break;
+            }
+        }
+
+        secilenSatir.cells[0].textContent = kisi.ad
+        secilenSatir.cells[1].textContent = kisi.soyad
+        secilenSatir.cells[2].textContent = kisi.email
+
+        document.querySelector('.kaydetGuncelle').value = 'Kaydet'
+        secilenSatir = undefined;
+
+        console.log(tumKisilerDizisi);
+    }
 
 
 function verileriKontrolEt(kisi){
