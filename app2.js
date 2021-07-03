@@ -13,7 +13,7 @@ class Kisi{
 //const hasan = new Kisi('hasan','kurtohlu','hasan@hasan')  
 //const fatma = new Kisi('fatma','esref','fatma@esref')  
 //emre.ad diyerek degerlerimize ulasabiliriz
-
+//silmek istedigimizde hem veri tababinda hem de arayuzumuzde yapimiz olmali 
 class Util{
         static bosAlanBirakma(...alanlar){
         let sonuc = true
@@ -27,7 +27,7 @@ class Util{
     }
 }
 
-class Ekran{
+class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerimizdir
     constructor(){  //kisiler de iki veyahut 3 4 5 bize kalmis sayisi her bir kisi olusturdgumuzda yeni kutu olusur cunku oraya biz emrenin hasanin fatmanin parametrelerini giricez fakat Ekranda ayni sey soz konusu degil bu yuzden constructor i bos biraktik
         this.ad = document.querySelector('#ad')
         this.soyad = document.querySelector('#soyad')
@@ -36,9 +36,29 @@ class Ekran{
         this.form = document.querySelector('#form-rehber').addEventListener('submit',
         this.kaydetGuncelle.bind(this)) //suanki this ekran objemizi temsil etmesi icin bindladik
         this.kisiListesi = document.querySelector('.kisi-listesi')
+        this.kisiListesi.addEventListener('click',this.guncelleVeyaSil.bind(this))//ekranin degerlerine(ad soyad email gibi yukarida olusturdugumuz degerlere) erismek istiyorsak bind(this) demeliyiz 
         this.depo = new Depo()      
+        this.secilenSatir = undefined
         this.kisileriEkranaYazdir()  
       }
+
+    guncelleVeyaSil(e){
+        const tiklanmaYeri = e.target
+        if(tiklanmaYeri.classList.contains('btn--delete')){
+            this.secilenSatir = tiklanmaYeri.parentElement.parentElement
+            this.kisiyiEkrandanSil()
+            
+        }else if(tiklanmaYeri.classList.contains('btn--edit')){
+            console.log('editt')
+        }
+    }
+
+    kisiyiEkrandanSil(){
+        this.secilenSatir.remove() //ekrandan sildik
+        const silinecekMail = this.secilenSatir.cells[2].textContent;
+        this.depo.kisiSil(silinecekMail)
+        this.alanlariTemizle()
+    }
 
     kisileriEkranaYazdir(){
         this.depo.tumKisiler.forEach(kisiA =>{ //depomuzun icindeki tumkisilere Erisip elemanlar
@@ -74,12 +94,20 @@ class Ekran{
         
         //localStorage a ekle
         this.depo.kisiEkle(kisi)
+        this.alanlariTemizle()
     }
     
     else{ //bazi alanlar eksik
         console.log('bos birakilmaz');
     }
-}}
+}
+
+alanlariTemizle(){
+    this.ad.value = '',
+    this.soyad.value = '',
+    this.email.value = ''
+}
+}
  
 class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir islem yapmak istedigimizde mesala API gibi ekran veya Kisinin haberi dahil olmaz
   
@@ -98,11 +126,19 @@ class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir is
         return tumKisilerLocal
      }
      kisiEkle(kisi){ 
-        const tumKisilerLocal =this.kisileriGetir(); //bu bir string ifade once bizim diziye donusturup sonra islemimizi yapip sonra geri yazmamiz gerekiyor
-        tumKisilerLocal.push(kisi)
-        localStorage.setItem('tumKisiler',JSON.stringify(tumKisilerLocal));
+        this.tumKisiler.push(kisi) //burada zaten tumkisiler adinda arreyimiz var onu kullandik dogrudan ona atadik
+        localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler));
      }
-
+     //veri tabani kismimiz 
+     kisiSil(email){ 
+        this.tumKisiler.forEach((kisi,index) =>{//ilgili dizide guncellememizi yaptik
+            if(kisi.email === email){
+                this.tumKisiler.splice(index,1)
+            }
+        })
+        localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik 
+    }
+    
 }
 
  document.addEventListener('DOMContentLoaded',function(e){ //butun HTML yapisi eklendikten sonra burada bir function calistiricaz
