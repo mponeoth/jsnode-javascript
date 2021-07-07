@@ -1,5 +1,5 @@
 //classlar global olmazlar mumkun oldugunca global degisken kullanma her bir sinifin kendine ait ozellikleri vardir herbiri ayri bir dosyadadir olusturdugumuz farkli classlar  her sinifinda ap ayri gorevleri vardir
-
+//guncelleme yi hem ekranda hemde localstorage imizda  yapicaz hemde bilgi olustur ile mesaj gondericez
 class Kisi{
     constructor(ad,soyad,email){    
         this.ad = ad;
@@ -33,7 +33,8 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
         this.soyad = document.querySelector('#soyad')
         this.email = document.querySelector('#email')
         this.ekleGuncelleButon = document.querySelector('.kaydetGuncelle')   
-        this.form = document.querySelector('#form-rehber').addEventListener('submit',
+        this.form = document.querySelector('#form-rehber')
+        this.form.addEventListener('submit',
         this.kaydetGuncelle.bind(this)) //suanki this ekran objemizi temsil etmesi icin bindladik
         this.kisiListesi = document.querySelector('.kisi-listesi')
         this.kisiListesi.addEventListener('click',this.guncelleVeyaSil.bind(this))//ekranin degerlerine(ad soyad email gibi yukarida olusturdugumuz degerlere) erismek istiyorsak bind(this) demeliyiz 
@@ -49,8 +50,26 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
             this.kisiyiEkrandanSil()
             
         }else if(tiklanmaYeri.classList.contains('btn--edit')){
-            console.log('editt')
+            this.secilenSatir = tiklanmaYeri.parentElement.parentElement
+            this.ekleGuncelleButon.value="Guncelle"//yani kisacasi biz edit butonuna tikladigimizda kaydet kisminda Guncelle yazicak  
+            this.ad.value = this.secilenSatir.cells[0].textContent; //suan kisinin degerlerini(ad,soyad,email) ekrana atadik
+            this.soyad.value = this.secilenSatir.cells[1].textContent;//ad soyad email kismina atadigimiz degerler gelicek kisacasi
+            this.email.value = this.secilenSatir.cells[2].textContent;
+
         }
+    }
+
+    kisiyiEkrandaGuncelle(kisi){ 
+        this.depo.kisiGuncelle(kisi , this.secilenSatir.cells[2].textContent)//ekranda guncellenmeden once cagirmaliyiz eski degerlerimizi cunku burada eski degerimiz var yenisiyle degistiriyoruz
+         
+        this.secilenSatir.cells[0].textContent = kisi.ad;
+        this.secilenSatir.cells[1].textContent = kisi.soyad;
+        this.secilenSatir.cells[2].textContent = kisi.email;
+
+        this.alanlariTemizle()
+        this.secilenSatir =undefined;
+        this.ekleGuncelleButon.value='Kaydet'
+        this.bilgiOlustur('Kisi Guncellendi' , true)
     }
 
     kisiyiEkrandanSil(){
@@ -58,6 +77,8 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
         const silinecekMail = this.secilenSatir.cells[2].textContent;
         this.depo.kisiSil(silinecekMail)
         this.alanlariTemizle()
+        this.secilenSatir = undefined; //undefined a getirmeliyiz ilk haline gelmesi icin kaydetguncelle butonu buradaki degere bakarak bir mantik yurutuyordu
+        this.bilgiOlustur('Kisi Rehberden Silindi',true)
     }
 
     kisileriEkranaYazdir(){
@@ -79,9 +100,30 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
            
         </td>`
         this.kisiListesi.appendChild(olusturulanTR)
+
     }
 
+    bilgiOlustur(mesaj,durum){
 
+        const uyariDivi = document.querySelector('.bilgi')
+   
+        uyariDivi.innerHTML = mesaj;
+    
+        uyariDivi.className = 'bilgi'
+    
+        if(durum){
+            uyariDivi.classList.add('bilgi--success')
+        }else{
+            uyariDivi.classList.add('bilgi--error')
+        }
+
+        setTimeout(function(){ 
+             uyariDivi.className = 'bilgi'
+         },2000);
+
+    }
+    
+     
     kaydetGuncelle(e){
     e.preventDefault();
     const kisi = new Kisi(this.ad.value,this.soyad.value,this.email.value)
@@ -89,11 +131,20 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
     const outcome = Util.bosAlanBirakma(kisi.ad,kisi.soyad,kisi.email)
     //tum alanlar doldurulmus
     if(outcome){
+        
+        if(this.secilenSatir){
+        //eger secilen satir undefined degilse guncellenecek demektir
+        this.kisiyiEkrandaGuncelle(kisi) 
+        }
+        else{
+        //eger secilen satir undefined ise ekleme yapilacaktir
         //yeni kisiyi ekrana ekler
+        this.bilgiOlustur('Basariyla Eklendi',true)
+
         this.kisiyiEkranaEkle(kisi) //buradaki kisi kaydetGuncelle icerisindeki kisi degiskenindendir
         
         //localStorage a ekle
-        this.depo.kisiEkle(kisi)
+        this.depo.kisiEkle(kisi)        }
         this.alanlariTemizle()
     }
     
@@ -138,8 +189,17 @@ class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir is
         })
         localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik 
     }
+    //guncellenmisKisi : yeni degerleri icerir
+    //mail kisinin  veritabaninda bulunmasi icin gerekli olan eski mailini icerir
+    kisiGuncelle(guncellenmisKisi,email){ 
+        this.tumKisiler.forEach((kisi,index) =>{ 
+            if(kisi.email === email){
+                this.tumKisiler[index] = guncellenmisKisi //eski degerlerimizin yerine yenisi olan guncellenmisKisi yi atiyoruz
+        }})
+        localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik 
+    }
     
-}
+}   
 
  document.addEventListener('DOMContentLoaded',function(e){ //butun HTML yapisi eklendikten sonra burada bir function calistiricaz
      const ekran = new Ekran() //bunu yaptigimizda Ekrandaki constructor tetiklenir 
