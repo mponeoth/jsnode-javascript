@@ -25,6 +25,11 @@ class Util{
         })
         return sonuc 
     }
+
+    static emailGecerliMi(email){ //e mailimizin gecerli olup olmadigini ogrenmek icin
+        const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+        return re.test(String(email).toUpperCase())
+    }
 }
 
 class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerimizdir
@@ -58,18 +63,26 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
 
         }
     }
+    kisiyiEkrandaGuncelle(kisi){ //ekranda guncellemek icin 
 
-    kisiyiEkrandaGuncelle(kisi){ 
-        this.depo.kisiGuncelle(kisi , this.secilenSatir.cells[2].textContent)//ekranda guncellenmeden once cagirmaliyiz eski degerlerimizi cunku burada eski degerimiz var yenisiyle degistiriyoruz
-         
-        this.secilenSatir.cells[0].textContent = kisi.ad;
-        this.secilenSatir.cells[1].textContent = kisi.soyad;
-        this.secilenSatir.cells[2].textContent = kisi.email;
 
-        this.alanlariTemizle()
-        this.secilenSatir =undefined;
-        this.ekleGuncelleButon.value='Kaydet'
-        this.bilgiOlustur('Kisi Guncellendi' , true)
+
+        const  sonuc = this.depo.kisiGuncelle(kisi , this.secilenSatir.cells[2].textContent)//ekranda guncellenmeden once cagirmaliyiz eski degerlerimizi cunku burada eski degerimiz var yenisiyle degistiriyoruz
+        
+        if(sonuc){
+            this.secilenSatir.cells[0].textContent = kisi.ad;
+            this.secilenSatir.cells[1].textContent = kisi.soyad;
+            this.secilenSatir.cells[2].textContent = kisi.email;
+            this.alanlariTemizle()
+            this.secilenSatir =undefined;
+            this.ekleGuncelleButon.value='Kaydet'
+            this.bilgiOlustur('Kisi Guncellendi' , true)
+
+        }
+        else{
+            this.bilgiOlustur('yazdiginiz email kullanimdadir',false)
+        }
+        
     }
 
     kisiyiEkrandanSil(){
@@ -129,9 +142,17 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
     const kisi = new Kisi(this.ad.value,this.soyad.value,this.email.value)
     console.log(kisi);
     const outcome = Util.bosAlanBirakma(kisi.ad,kisi.soyad,kisi.email)
+    const emailGecerliMi = Util.emailGecerliMi(this.email.value)
+    console.log(this.email.value + "icin email kontrolu sonuc:" + emailGecerliMi)
+
     //tum alanlar doldurulmus
     if(outcome){
         
+        if(!emailGecerliMi){
+            this.bilgiOlustur('lutfen gecerli bir email giriniz',false)
+            return //return dedigimizde eger yanlis girilmisse assagaki kodlara bakma diyoruz
+        }
+
         if(this.secilenSatir){
         //eger secilen satir undefined degilse guncellenecek demektir
         this.kisiyiEkrandaGuncelle(kisi) 
@@ -139,17 +160,23 @@ class Ekran{//classimizin icindeki constructorlarimiz bizim global degiskenlerim
         else{
         //eger secilen satir undefined ise ekleme yapilacaktir
         //yeni kisiyi ekrana ekler
-        this.bilgiOlustur('Basariyla Eklendi',true)
 
-        this.kisiyiEkranaEkle(kisi) //buradaki kisi kaydetGuncelle icerisindeki kisi degiskenindendir
-        
-        //localStorage a ekle
-        this.depo.kisiEkle(kisi)        }
-        this.alanlariTemizle()
+            //localStorage a ekle
+            const sonuc =this.depo.kisiEkle(kisi) 
+            console.log('sonuc ' + sonuc + 'kaydetGuncelle icinde')
+            if(sonuc){
+                this.bilgiOlustur('basariyla eklendi' , true)
+                this.kisiyiEkranaEkle(kisi)
+                this.alanlariTemizle()
+
+            }else{
+                this.bilgiOlustur('bu email kullanimda', false)
+            }
+    }
     }
     
     else{ //bazi alanlar eksik
-        console.log('bos birakilmaz');
+        this.bilgiOlustur('lutfen bos alan birakmayiniz',false)
     }
 }
 
@@ -165,6 +192,22 @@ class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir is
      constructor(){
          this.tumKisiler =  this.kisileriGetir();  //kisileriGetir calistiginda tumkisilerin ici dolar 
      }
+
+     emailEssizMi(email){
+        const sonuc = this.tumKisiler.find(kisi=>{
+            return kisi.email === email
+        })
+
+        //eger true ise bu maili kullanan biri var demekki essiz degil
+        if(sonuc){
+            console.log(email + 'kullanimda')
+            return false;
+        }else{ // eger veri yapimda boyle birisi yoksa true dondurucez
+            console.log(email + 'kullanimda degil ekleme guncelleme yapilabilir')
+            return true; 
+        }
+     }
+
      kisileriGetir(){
         let tumKisilerLocal; //buradaki tumKisilerLocal buradaki fonksiyon icin gecerli
         if(localStorage.getItem('tumKisiler') === null){
@@ -176,9 +219,16 @@ class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir is
 
         return tumKisilerLocal
      }
-     kisiEkle(kisi){ 
-        this.tumKisiler.push(kisi) //burada zaten tumkisiler adinda arreyimiz var onu kullandik dogrudan ona atadik
-        localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler));
+      kisiEkle(kisi){ 
+
+        if(this.emailEssizMi(kisi.email)){
+            this.tumKisiler.push(kisi) //burada zaten tumkisiler adinda arreyimiz var onu kullandik dogrudan ona atadik
+            localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler));
+            return true //true donuyorsa eklenmistir
+        }else{
+            return false //false deger donuyorsa email kullanimdadir
+        }
+        
      }
      //veri tabani kismimiz 
      kisiSil(email){ 
@@ -192,11 +242,35 @@ class Depo{  //Uygulama ilk acildiginda veriler getirilir burada herhangi bir is
     //guncellenmisKisi : yeni degerleri icerir
     //mail kisinin  veritabaninda bulunmasi icin gerekli olan eski mailini icerir
     kisiGuncelle(guncellenmisKisi,email){ 
-        this.tumKisiler.forEach((kisi,index) =>{ 
-            if(kisi.email === email){
+
+        if(guncellenmisKisi.email === email){
+            this.tumKisiler.forEach((kisi,index) =>{ 
+                if(kisi.email === email){
+                console.log('kisi Dongude bulundu')
                 this.tumKisiler[index] = guncellenmisKisi //eski degerlerimizin yerine yenisi olan guncellenmisKisi yi atiyoruz
-        }})
-        localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik 
+                localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik   
+                return true
+            }})
+            return true
+
+        }
+        
+        if(this.emailEssizMi(guncellenmisKisi.email)){
+            console.log(guncellenmisKisi.email + " guncelleme yapiliyor ve sonuc guncelleme yapabilirsin" )
+
+            this.tumKisiler.forEach((kisi,index) =>{ 
+                if(kisi.email === email){
+                console.log('kisi Dongude bulundu')
+                this.tumKisiler[index] = guncellenmisKisi //eski degerlerimizin yerine yenisi olan guncellenmisKisi yi atiyoruz
+                localStorage.setItem('tumKisiler',JSON.stringify(this.tumKisiler)); // suan localstorage imiza ekledik ve yeni halini kaydettik   
+                return true
+            }})
+            return true
+        }else{
+            console.log(guncellenmisKisi.email + 'email kullanimda guncelleme yapilacak')
+            return false
+        }
+
     }
     
 }   
