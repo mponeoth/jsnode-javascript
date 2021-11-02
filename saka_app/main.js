@@ -1,0 +1,2 @@
+const ekran = new Ekran()
+
