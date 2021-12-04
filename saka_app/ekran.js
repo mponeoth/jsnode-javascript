@@ -1,3 +1,7 @@
+    import resimGetir from "./unsplash_api.js"
+    import ceviriliYapilacak from "./translate_api.js"
+    import sakaGetir from "./joke_api.js"
+
 class Ekran{
     constructor(){
         this.btnSakaUret = document.getElementById('BtnsakaUret')
@@ -5,9 +9,9 @@ class Ekran{
 
     }
     async sakaUretf(){
-        const randomResimGetir = await new unsplashApi().randomResimGetir() //await yapisiyla hepsi birbirini bekliyor once resim sonra saka sonra ceviri
-        const randomSakaGetir = await new JokeApi().randomSakaGetir()
-        const translateCevir = await new translateAPI(randomSakaGetir).ceviriYap()
+        const randomResimGetir = await resimGetir() //await yapisiyla hepsi birbirini bekliyor once resim sonra saka sonra ceviri
+        const randomSakaGetir = await ceviriliYapilacak()
+        const translateCevir = await sakaGetir(randomSakaGetir)
         const tumSonuclar = {
             randomResimGetir,
             randomSakaGetir,
@@ -36,3 +40,7 @@ class Ekran{
         `
     }
 }
+
+    export default function uygulamayiBaslat(){
+        new Ekran()
+    }

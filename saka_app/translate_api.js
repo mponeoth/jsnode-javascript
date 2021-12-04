@@ -28,3 +28,9 @@ class translateAPI{
         }
 
 }
+
+    export default function ceviriliYapilacak(ceviri){
+        const ceviriler =  new translateAPI(ceviri).ceviriYap()
+        return ceviriler
+    } 
+
