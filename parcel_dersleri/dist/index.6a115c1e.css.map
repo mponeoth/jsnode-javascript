@@ -1,0 +1,1 @@
+{"mappings":"AAEA;EACI,kBAHQ","sources":["Desktop/GitHub/node-javascript/jsnode-javascript/parcel_dersleri/src/scss/style.scss"],"sourcesContent":["$ana-renk : orange;\r\n\r\nbody{\r\n    background-color: $ana-renk;\r\n}"],"names":[],"version":3,"file":"index.6a115c1e.css.map","sourceRoot":"/__parcel_source_root/"}
