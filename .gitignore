@@ -2,3 +2,13 @@
 !spec/*.json
 *.ts
 *.cmd
+!spec/*.README.md
+/*README.md
+/*AssignLibraryPlugin.js
+*watchpack.js
+!spec/*.watchpack.js
+*ImportScriptsChunkLoadingRuntimeModule.js 
+!spec/*ImportScriptsChunkLoadingRuntimeModule.js 
+/*ContainerEntryModule.js
+/*WebpackOptions.check.js
+/*

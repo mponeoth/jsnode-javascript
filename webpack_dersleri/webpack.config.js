@@ -8,12 +8,27 @@
 const path = require('path')
 
 module.exports = {
-    entry:'./src/index.js',
-    output:{
+    entry:'./src/index.js', //ilk once nerden calismaya baslamasi gerektigini soyluyoruz
+    output:{//amacimiz ise bir output olusturmak
         filename:'main2.js', //surada olusturularacak yerin tam yolunu veriyor 
         path: path.resolve(__dirname,'dist') 
     },
-    mode:'development'
+    mode:'development',
+    module: {
+        rules: [
+            {
+              test: /\.s[ac]ss$/i,
+              use: [
+                // Creates `style` nodes from JS strings islem onceligi 3 
+                "style-loader",
+                // Translates CSS into CommonJS islem onceligi 2 
+                "css-loader",  
+                // Compiles Sass to CSS islem onceligi 1 
+                "sass-loader",   
+              ],
+            },
+          ],
+      },
 }
 
 
