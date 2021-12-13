@@ -6,6 +6,7 @@
 //CleanWebpackPlugin bizim olusan main2 2asssdsdsd main2 sdsdsdsd  eski dosyarimizi supurmek icin kullaniriz 
 //catch kavrami bir web sitesine gittigimizde orn emrealtunbilek.com a gidiyoruz ilk acilis genellikle sitelerde yavas olur sonrakilere gore network kismina gidip js ve css kisimlarina bakmak istiyorum dosyalar getiriliyor yanlarinda size`a 
 //baktigimizda diyor ben bu dosyayi catchden cektim ben bu dosyayi (memorycatch) den cektim diye yazi goruruz  ben burada control + f5 bu cacth mekanizmasini iptal etmis oluyoruz ve ve dosyalarimizi catchden degil serverdan cekmis oluyoruz 
+//npm install --save-dev webpack-dev-server bu bizim kendi live serverimiz icin gerekli npm paketimiz  kurduk ve  
 
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -47,3 +48,12 @@ module.exports = {
 //     "start": "webpack --config webpack.config.js" // npm start olarak cagirmamiz yeterli olur
 //   },
 
+
+
+// "scripts": {
+//     "start": "webpack-dev-server --config webpack.config.js --open"
+//   }
+
+
+//yukaridaki packagejson dosyasina yazdigimniz yazidir live serverimiz icin yaptigimiz her islem biz kaydetmeden kaydedilecek
+// --config webpack.config.js ise bizim dosyamizdir 
