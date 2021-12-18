@@ -10,9 +10,17 @@ console.log("merhaba2 nasilsin")
 
 console.log("merhaba")
 console.log("merhaba")
+console.log("merhaba")
+console.log("merhaba")
+console.log("merhaba2")
+console.log("merhaba2")
+console.log("merhaba2")
 console.log("merhaba2")
 console.log("merhaba3")
 console.log("merhaba4")
-
+console.log("merhaba4")
+console.log("merhaba4")
+console.log("merhaba5")
+ 
 
 
